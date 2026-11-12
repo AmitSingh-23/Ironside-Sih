@@ -1961,7 +1961,7 @@ export default function IRONside() {
       
       let liveSensorData = null;
       try {
-        const response = await fetch("http://192.168.1.4:5000/api/sensor-data");
+        const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/sensor-data`);
         if (response.ok) {
           liveSensorData = await response.json();
         }
