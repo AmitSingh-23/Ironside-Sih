@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
 
 // Middleware
-app.use(cors({ origin: "*", credentials: false }));
+app.use(cors({ origin: CORS_ORIGIN.split(",").map((o) => o.trim()), credentials: false }));
 app.use(express.json());
 
 // Request logger
@@ -47,7 +47,7 @@ app.use("/api/maintenance", maintenanceRoutes);
 app.use("/api/system", systemRoutes);
 
 
-// Dedicated Edge Sensor Route (as requested by user)
+// Simulated ESP32 edge-node reading, used by the dashboard demo
 app.get("/api/sensor-data", (req, res) => {
   // Simulate live hardware data coming from ESP32 edge node
   const wobble = (Math.random() - 0.5) * 0.04;
@@ -71,7 +71,7 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error("Unhandled Server Error:", err);
-  res.status(500).json({ success: false, message: "Internal server error", error: err.message });
+  res.status(500).json({ success: false, message: "Internal server error" });
 });
 
 app.listen(PORT, () => {
